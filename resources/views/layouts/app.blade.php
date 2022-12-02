@@ -14,7 +14,8 @@
     <title>{{ config('app.name', 'StudentEkta') }}</title>
 
     <!-- vendor css -->
-    <link href="{{ asset('/backend/lib/%40fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <link href="{{ asset('/backend/lib/rickshaw/rickshaw.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/backend/lib/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -48,10 +49,7 @@
           <ul class="br-menu-sub">
             <li class="sub-item"><a href="{{ route('roles.index') }}" class="sub-link">Manage Role</a></li>
             <li class="sub-item"><a href="{{ route('users.index') }}" class="sub-link">Manage Users</a></li>
-            <li class="sub-item"><a href="{{ route('countries.index') }}" class="sub-link">Manage Country</a></li>
-			<li class="sub-item"><a href="{{ route('states.index') }}" class="sub-link">Manage State</a></li>
-			<li class="sub-item"><a href="{{ route('cities.index') }}" class="sub-link">Manage City</a></li>
-			<li class="sub-item"><a href="{{ route('villages.index') }}" class="sub-link">Manage Village</a></li>
+            <li class="sub-item"><a href="{{ route('locations.index') }}" class="sub-link">Manage Location</a></li>
 			<li class="sub-item"><a href="{{ route('boards.index') }}" class="sub-link">Manage Board</a></li>
 			<li class="sub-item"><a href="{{ route('courses.index') }}" class="sub-link">Manage Course</a></li>
 			<li class="sub-item"><a href="{{ route('exams.index') }}" class="sub-link">Manage Exam</a></li>

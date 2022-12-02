@@ -27,9 +27,9 @@
 		  <div class="form-layout form-layout-1">
 		  <form action="{{ route('colleges.index') }}" method="PUT">
 			@csrf
-			
-            <div class="row mg-b-25">
-             <h4 class="br-section-label">Filter By:</h4>
+			<h4 class="br-section-label" style="margin-top: 0px;">Filter By:</h4>
+            <div class="row mg-b-5">
+             
 		  
               <div class="col-lg-3">
                 <div class="form-group mg-b-10-force">
@@ -47,6 +47,14 @@
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">State: <span class="tx-danger">*</span></label>
                   <select class="form-control select2-show-search" data-placeholder="Choose state" id="state-dd" name="state_search">
+                    
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  <div class="col-lg-3">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" data-placeholder="Choose city" id="city-dd" name="city_search">
                     
                   </select>
                 </div>
@@ -76,8 +84,7 @@
 		<tr>
             <th>No</th>
             <th>Name</th>
-            <th>Country</th>
-			<th>State</th>
+            <th>City</th>
 			<th>University</th>
 			<th>Status</th>
 			<th>Created At</th>
@@ -90,8 +97,8 @@
 	    <tr>
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $college->name }}</td>
-	        <td>{{ $college->country->name }}</td>
-			<td>{{ $college->state->name }}</td>
+	        
+			<td>{{ $college->city->name }}</td>
 			<td>{{ $college->university->name }}</td>
 			<td>@if($college->status=='1')
 					<span class='text-success'>Active</span>

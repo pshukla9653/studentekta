@@ -25,12 +25,7 @@
                 {{ $city->name }}
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Country:</strong>
-                {{ $city->country->name }}
-            </div>
-        </div>
+        
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>State:</strong>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Country;
 use App\Models\State;
-use App\Models\Course;
 use App\Models\University;
 
 class UniversityController extends Controller
@@ -30,29 +29,25 @@ class UniversityController extends Controller
     public function index(Request $request)
     {
        $countries 	= Country::all()->sortBy('name');
-	   $courses 	= Course::all()->sortBy('name');
+	   
 	   $totaluniversities = University::all()->sortBy("name");
 	   $universitiescount = count($totaluniversities);
 	   $universities =array();
 	   
 		if($request->input('btn')){
 			
-            if($request->input('country_search')){
-				$find['country_id'] = $request->input('country_search');
-			}
+            
 			if($request->input('state_search')){
 				$find['state_id'] = $request->input('state_search');
 			}
-			if($request->input('course_search')){
-				$find['course_id'] = $request->input('course_search');
-			}
+			
 			
             $universities = University::where($find)->get();
 			$universitiescount = count($universities);
             
         }
 		
-        return view('universities.index', compact('countries','universities','courses','universitiescount'));
+        return view('universities.index', compact('countries','universities','universitiescount'));
     }
     
     /**
@@ -77,9 +72,9 @@ class UniversityController extends Controller
     {
         request()->validate([
             'name' => 'required',
-            'country_id' => 'required',
+            
 			'state_id' => 'required',
-			'course_id' => 'required',
+			
         ]);
     
         University::create($request->all());

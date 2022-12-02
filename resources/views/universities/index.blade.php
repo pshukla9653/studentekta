@@ -51,17 +51,7 @@
                   </select>
                 </div>
               </div><!-- col-4 -->
-			  <div class="col-lg-3">
-                <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">Course: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" data-placeholder="Choose course" name="course_search">
-                    <option value="">Select</option>
-                   @foreach($courses as $course)
-					<option value="{{$course->id}}">{{$course->name}}</option>
-                   @endforeach
-                  </select>
-                </div>
-              </div><!-- col-4 -->
+			  
             </div><!-- row -->
 
             <div class="form-layout-footer">
@@ -75,10 +65,10 @@
 		<thead>
 		<tr>
             <th>No</th>
-            <th>Name</th>
-            <th>Country</th>
+            <th style="style=width:20%!important;">Name</th>
+            
 			<th>State</th>
-			<th>Course</th>
+			
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
@@ -90,9 +80,9 @@
 	    <tr>
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $university->name }}</td>
-	        <td>{{ $university->country->name }}</td>
+
 			<td>{{ $university->state->name }}</td>
-			<td>{{ $university->course->name }}</td>
+			
 			<td>@if($university->status=='1')
 					<span class='text-success'>Active</span>
 				@else

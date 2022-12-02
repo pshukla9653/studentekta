@@ -28,16 +28,14 @@ class CityController extends Controller
      */
     public function index(Request $request)
     {
-       $countries 	= Country::all();
-	   $states 		= State::all();
+       
+	   $countries 		= Country::all();
 	   $totalcities = City::all()->sortBy("name");
 	   $citiescount = count($totalcities);
 	   $cities =array();
 		if($request->input('btn')){
 			
-            if($request->input('country_search')){
-				$find['country_id'] = $request->input('country_search');
-			}
+            
 			if($request->input('state_search')){
 				$find['state_id'] = $request->input('state_search');
 			}
@@ -46,7 +44,7 @@ class CityController extends Controller
             
         }
         
-        return view('cities.index',compact('cities','countries','states','citiescount'));
+        return view('cities.index',compact('cities','countries','citiescount'));
     }
     
     /**
@@ -56,8 +54,8 @@ class CityController extends Controller
      */
     public function create()
     {
-		$countries = Country::all();
-        return view('cities.create', compact('countries'));
+		$states = State::all();
+        return view('cities.create', compact('states'));
     }
     
     /**
@@ -97,9 +95,9 @@ class CityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(City $city)
-    {	$countries = Country::all();
-		$states = State::where("country_id", $city->country_id)->get(["name", "id"]);
-        return view('cities.edit',compact('city','countries','states'));
+    {	$states = Country::all();
+		
+        return view('cities.edit',compact('city','states'));
     }
     
     /**

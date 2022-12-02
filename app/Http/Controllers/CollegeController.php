@@ -39,11 +39,9 @@ class CollegeController extends Controller
 	   
 		if($request->input('btn')){
 			
-            if($request->input('country_search')){
-				$find['country_id'] = $request->input('country_search');
-			}
-			if($request->input('state_search')){
-				$find['state_id'] = $request->input('state_search');
+            
+			if($request->input('city_search')){
+				$find['city_id'] = $request->input('city_search');
 			}
 			if($request->input('university_search')){
 				$find['university_id'] = $request->input('university_search');
@@ -78,8 +76,6 @@ class CollegeController extends Controller
     {
         request()->validate([
             'name' => 'required|unique:colleges|alpha_num',
-            'country_id' => 'required',
-			'state_id' => 'required',
 			'city_id' => 'required',
 			'university_id' => 'required',
         ]);

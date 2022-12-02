@@ -52,17 +52,7 @@
                   </select>
                 </div>
 		    </div>
-			<div class="col-xs-12 col-sm-12 col-md-12">
-		        <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">Course: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" name="course_id[]" multiple>
-				  <option value="">Select</option>
-                   @foreach($courses as $course)
-					<option value="{{$course->id}}">{{$course->name}}</option>
-                   @endforeach 
-                  </select>
-                </div>
-		    </div>
+			
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Name:</strong>

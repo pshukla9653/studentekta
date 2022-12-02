@@ -90,7 +90,7 @@ class ProfessionController extends Controller
     public function update(Request $request, Profession $profession)
     {
          request()->validate([
-            ''name' => 'required|alpha_num',
+            'name' => 'required',
             'status' => 'required',
         ]);
     

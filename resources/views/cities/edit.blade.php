@@ -34,17 +34,7 @@
 
 
          <div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12">
-		        <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" name="country_id">
-				  <option value="">Select</option>
-                    @foreach($countries as $country)
-					<option value="{{$country->id}}" {{$city->country_id==$country->id?'selected':''}}>{{$country->name}}</option>
-                   @endforeach
-                  </select>
-                </div>
-		    </div>
+			
 			<div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group mg-b-10-force">
                   <label class="form-control-label">State: <span class="tx-danger">*</span></label>

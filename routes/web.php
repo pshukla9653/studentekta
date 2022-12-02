@@ -26,6 +26,7 @@ use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\EobjectController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\SubobjectController;
+use App\Http\Controllers\LocationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,15 +63,16 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('states', StateController::class);
 	Route::resource('chapters', ChapterController::class);
 	Route::resource('cities', CityController::class);
-	Route::post('api/fetch-states', [CityController::class, 'fetchState']);
 	Route::resource('villages', VillageController::class);
-	Route::post('api/fetch-cities', [CityController::class, 'fetchCity']);
 	Route::resource('universities', UniversityController::class);
 	Route::resource('schools', SchoolController::class);
 	Route::resource('colleges', CollegeController::class);
 	Route::resource('eobjects', EobjectController::class);
 	Route::resource('professions', ProfessionController::class);
 	Route::resource('subobjects', SubobjectController::class);
+	Route::resource('locations', LocationController::class);
+	Route::post('api/fetch-states', [LocationController::class, 'fetchState']);
+	Route::post('api/fetch-cities', [LocationController::class, 'fetchCity']);
 	
 	
 });

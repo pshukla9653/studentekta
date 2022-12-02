@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Village;
 use App\Models\Board;
 class School extends Model
 {
@@ -33,6 +34,10 @@ class School extends Model
         return $this->hasOne(City::class, 'id', 'city_id');
     }
 	public function board()
+    {
+        return $this->hasOne(Board::class, 'id', 'board_id');
+    }
+	public function village()
     {
         return $this->hasOne(Board::class, 'id', 'board_id');
     }

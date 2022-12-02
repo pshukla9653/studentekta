@@ -25,18 +25,8 @@
                 {{ $college->name }}
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Country:</strong>
-                {{ $college->country->name }}
-            </div>
-        </div>
-		<div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>State:</strong>
-                {{ $college->state->name }}
-            </div>
-        </div>
+        
+		
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>City:</strong>

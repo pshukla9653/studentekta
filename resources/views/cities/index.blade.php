@@ -31,7 +31,7 @@
             <div class="row mg-b-25">
              <h4 class="br-section-label">Filter By:</h4>
 		  
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
                   <select class="form-control select2-show-search" id="country-dd" name="country_search">
@@ -43,7 +43,7 @@
                 </div>
               </div><!-- col-4 -->
 			  
-			  <div class="col-lg-4">
+			  <div class="col-lg-3">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">State: <span class="tx-danger">*</span></label>
                   <select class="form-control select2-show-search" data-placeholder="Choose state" id="state-dd" name="state_search">
@@ -51,6 +51,7 @@
                   </select>
                 </div>
               </div><!-- col-4 -->
+			  
             </div><!-- row -->
 
             <div class="form-layout-footer">
@@ -64,8 +65,7 @@
 		<thead>
 		<tr>
             <th>No</th>
-            <th>Name</th>
-            <th>Country</th>
+            <th>Name</th>           
 			<th>State</th>
 			<th>Status</th>
 			<th>Created At</th>
@@ -78,7 +78,7 @@
 	    <tr>
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $city->name }}</td>
-	        <td>{{ $city->country->name }}</td>
+	       
 			<td>{{ $city->state->name }}</td>
 			<td>@if($city->status=='1')
 					<span class='text-success'>Active</span>
