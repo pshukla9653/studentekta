@@ -40,7 +40,7 @@
                   <select class="form-control select2-show-search" name="country_id">
 				  <option value="">Select</option>
                     @foreach($countries as $country)
-					<option value="{{$country->id}}" {{$university->country_id==$country->id?'selected':''}}>{{$country->name}}</option>
+					<option value="{{$country->country_id}}" {{$university->country_id==$country->country_id?'selected':''}}>{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -51,7 +51,7 @@
                   <select class="form-control select2-show-search" name="state_id" id="state-dd">
 				  <option value="">Select</option>
 					@foreach($states as $state)
-					<option value="{{$state->id}}" {{$university->state_id==$state->id?'selected':''}}>{{$state->name}}</option>
+					<option value="{{$state->id}}" {{$university->state_id==$state->id?'selected':''}}>{{$state->state_name}}</option>
                    @endforeach
                   </select>
                 </div>

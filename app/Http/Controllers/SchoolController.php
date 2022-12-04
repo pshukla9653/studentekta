@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Country;
-use App\Models\State;
-use App\Models\City;
+use App\Models\Location;
 use App\Models\Board;
 use App\Models\School;
 class SchoolController extends Controller
@@ -31,25 +29,34 @@ class SchoolController extends Controller
     {
        
 		
-		$countries 	= Country::all()->sortBy('name');
+	   $countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
 	   $boards 	= Board::all()->sortBy('name');
 	   $totalschools = School::all()->sortBy("name");
 	   $schoolscount = count($totalschools);
 	   $schools =array();
 	   
+	   //dd($formolddata);
 		if($request->input('btn')){
 			
-            if($request->input('country_search')){
+            if($request->input('country_search') && !$request->input('state_search') && !$request->input('city_search')){
 				$find['country_id'] = $request->input('country_search');
 			}
-			if($request->input('state_search')){
+			if($request->input('country_search') && $request->input('state_search') && !$request->input('city_search')){
+				$find['country_id'] = $request->input('country_search');
 				$find['state_id'] = $request->input('state_search');
+			}
+			if($request->input('country_search') && $request->input('state_search') && $request->input('city_search')){
+				$find['country_id'] = $request->input('country_search');
+				$find['state_id'] 	= $request->input('state_search');
+				$find['city_id'] 	= $request->input('city_search');
+				
 			}
 			if($request->input('board_search')){
 				$find['board_id'] = $request->input('board_search');
 			}
 			
             $schools = School::where($find)->get();
+			//dd($schools);
 			$schoolscount = count($schools);
             
         }
@@ -63,7 +70,7 @@ class SchoolController extends Controller
      */
     public function create()
     {
-		$countries = Country::all()->sortBy("name");
+		$countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
 		$boards = Board::all()->sortBy("name");
         return view('schools.create', compact('countries','boards'));
     }
@@ -77,7 +84,7 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:schools|alpha_num',
+            'name' => 'required|unique:schools',
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',
@@ -86,8 +93,7 @@ class SchoolController extends Controller
     
         School::create($request->all());
     
-        return redirect()->route('schools.index')
-                        ->with('success','School created successfully.');
+        return redirect()->route('schools.index')->with('success','School created successfully.');
     }
     
     /**
@@ -108,11 +114,13 @@ class SchoolController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(School $school)
-    {	$countries = Country::all();
-		$states = State::all();
-		$cities = City::all();
+    {	$countries 	= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+		$states = 		Location::where("country_id", $school->country_id)->get();
+		$citydata = Location::where("id", $school->state_id)->get();
+		$cities = json_decode($citydata[0]['cities'], true);
+		//dd($cities);
 		$boards = Board::all();
-        return view('schools.edit',compact('school','countries','states', 'cities','boards'));
+        return view('schools.edit',compact('school','countries','states', 'boards','cities'));
     }
     
     /**

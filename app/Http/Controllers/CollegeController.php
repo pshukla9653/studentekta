@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Country;
-use App\Models\State;
-use App\Models\City;
+use App\Models\Location;
 use App\Models\University;
 use App\Models\College;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CollegeImport;
+
 class CollegeController extends Controller
 {
           /**
@@ -31,8 +32,8 @@ class CollegeController extends Controller
     {
        
 		
-	   $countries 	= Country::all()->sortBy('name');
-	   $universities 	= University::all()->sortBy('name');
+	   $countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+	   
 	   $totalcolleges = College::all()->sortBy("name");
 	   $collegescount = count($totalcolleges);
 	   $colleges =array();
@@ -40,18 +41,31 @@ class CollegeController extends Controller
 		if($request->input('btn')){
 			
             
-			if($request->input('city_search')){
+			if($request->input('country_search') && !$request->input('state_search') && !$request->input('city_search') && !$request->input('university_search')){
+				$find['country_id'] = $request->input('country_search');
+			}
+			if($request->input('country_search') && $request->input('state_search') && !$request->input('city_search') && !$request->input('university_search')){
+				$find['country_id'] = $request->input('country_search');
+				$find['state_id'] = $request->input('state_search');
+			}
+			if($request->input('country_search') && $request->input('state_search') && $request->input('city_search') && !$request->input('university_search')){
+				$find['country_id'] = $request->input('country_search');
+				$find['state_id'] = $request->input('state_search');
 				$find['city_id'] = $request->input('city_search');
 			}
-			if($request->input('university_search')){
+			
+			if($request->input('country_search') && $request->input('state_search') && $request->input('city_search') && $request->input('university_search')){
+				$find['country_id'] = $request->input('country_search');
+				$find['state_id'] = $request->input('state_search');
+				$find['city_id'] = $request->input('city_search');
 				$find['university_id'] = $request->input('university_search');
 			}
 			
-            $colleges = University::where($find)->get();
+            $colleges = College::where($find)->get();
 			$collegescount = count($colleges);
             
         }
-        return view('colleges.index',compact('colleges','countries','universities','collegescount'));
+        return view('colleges.index',compact('colleges','countries','collegescount'));
     }
     
     /**
@@ -61,9 +75,9 @@ class CollegeController extends Controller
      */
     public function create()
     {
-		$countries = Country::all()->sortBy("name");
-		$universities = University::all()->sortBy("name");
-        return view('colleges.create', compact('countries','universities'));
+		$countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+		
+        return view('colleges.create', compact('countries'));
     }
     
     /**
@@ -75,7 +89,9 @@ class CollegeController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:colleges|alpha_num',
+            'name' => 'required|unique:colleges,name',
+			'country_id' => 'required',
+			'state_id' => 'required',
 			'city_id' => 'required',
 			'university_id' => 'required',
         ]);
@@ -104,11 +120,11 @@ class CollegeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(College $college)
-    {	$countries = Country::all();
-		$states = State::all();
-		$cities = City::all();
-		$universities = University::all();
-        return view('colleges.edit',compact('college','countries','states', 'cities','universities'));
+    {	$countries 	= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+		$states = 		Location::where("country_id", $college->country_id)->get();
+		
+		$universities = University::where("state_id", $college->state_id)->get();
+        return view('colleges.edit',compact('college','countries','states', 'universities'));
     }
     
     /**
@@ -121,10 +137,10 @@ class CollegeController extends Controller
     public function update(Request $request, College $college)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:colleges,name,'.$college->id,
             'country_id' => 'required',
 			'state_id' => 'required',
-			'city_id' => 'required',
+			
 			'university_id' => 'required',
         ]);
     
@@ -147,4 +163,33 @@ class CollegeController extends Controller
         return redirect()->route('colleges.index')
                         ->with('success','College deleted successfully');
     }
+	
+	/**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collegeImport()
+    {
+		$countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+		
+       return view('colleges.import', compact('countries'));
+    }
+   
+	/**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collegesFileImport(Request $request) 
+    {	
+		request()->validate([
+            'country_id' => 'required',
+			'state_id' => 'required',
+			'city_id' => 'required',
+			'university_id' => 'required',
+        ]);
+	
+        Excel::import(new CollegeImport, $request->file('file')->store('temp'));
+        return back()->with('success', 'Colleges Imported Successfully.');;
+    }
+	
+	
+	
 }

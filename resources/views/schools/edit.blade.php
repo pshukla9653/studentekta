@@ -40,7 +40,7 @@
                   <select class="form-control select2-show-search" name="country_id">
 				  <option value="">Select</option>
                     @foreach($countries as $country)
-					<option value="{{$country->id}}" {{$school->country_id==$country->id?'selected':''}}>{{$country->name}}</option>
+					<option value="{{$country->country_id}}" {{$school->country_id==$country->country_id?'selected':''}}>{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -51,7 +51,7 @@
                   <select class="form-control select2-show-search" name="state_id" id="state-dd">
 				  <option value="">Select</option>
 					@foreach($states as $state)
-					<option value="{{$state->id}}" {{$school->state_id==$state->id?'selected':''}}>{{$state->name}}</option>
+					<option value="{{$state->id}}" {{$school->state_id==$state->id?'selected':''}}>{{$state->state_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -62,7 +62,7 @@
                   <select class="form-control select2-show-search" name="city_id" id="city-dd">
 				  <option value="">Select</option>
 					@foreach($cities as $city)
-					<option value="{{$city->id}}" {{$school->city_id==$city->id?'selected':''}}>{{$city->name}}</option>
+					<option value="{{$city['id']}}" {{$school->city_id==$city['id']?'selected':''}}>{{$city['name']}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -109,7 +109,7 @@
         $(document).ready(function () {
             $('#country-dd').on('change', function () {
                 var idCountry = this.value;
-                $("#state-dd").html('');
+                $('#state-dd').html('<option value="">Select State</option>');
                 $.ajax({
                     url: "{{url('api/fetch-states')}}",
                     type: "POST",
@@ -122,10 +122,63 @@
                         $('#state-dd').html('<option value="">Select State</option>');
                         $.each(result.states, function (key, value) {
                             $("#state-dd").append('<option value="' + value
+                                .id + '">' + value.state_name + '</option>');
+                        });
+
+                    }
+                });
+            });
+			
+			$('#state-dd').on('change', function () {
+                var idState = this.value;
+                
+                $.ajax({
+                    url: "{{url('api/fetch-cities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.cities ==null){
+							$('#city-dd').html('<option value="">No City Found</option>');
+						}
+						else{
+                        $('#city-dd').html('<option value="">Select City</option>');
+                        $.each(result.cities, function (key, value) {
+                            $("#city-dd").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
-                        
-                    }
+						}
+                    },
+					
+                });
+            });
+			$('#city-dd').on('change', function () {
+                var idState = $('#state-dd').val();
+                
+                $.ajax({
+                    url: "{{url('api/fetch-universities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.universities ==null){
+							$('#university-dd').html('<option value="">No University Found</option>');
+						}
+						else{
+                        $('#university-dd').html('<option value="">Select University</option>');
+                        $.each(result.universities, function (key, value) {
+                            $("#university-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
                 });
             });
             });

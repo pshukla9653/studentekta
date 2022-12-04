@@ -4,7 +4,7 @@
 <div class="br-pagetitle">
         <i class="icon ion-ios-home-outline"></i>
         <div>
-          <h2>Add New State</h2>
+          <h2>Add New University</h2>
           <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
         </div>
 		 <div class="pull-right">
@@ -38,7 +38,7 @@
                   <select class="form-control select2-show-search" name="country_id" id="country-dd">
 				  <option value="">Select</option>
                     @foreach($countries as $country)
-					<option value="{{$country->id}}">{{$country->name}}</option>
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -97,7 +97,7 @@
                         $('#state-dd').html('<option value="">Select State</option>');
                         $.each(result.states, function (key, value) {
                             $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                                .id + '">' + value.state_name + '</option>');
                         });
 
                     }

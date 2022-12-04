@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\City;
+use App\Models\Location;
 use App\Models\University;
 class College extends Model
 {
@@ -17,13 +16,13 @@ class College extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'city_id','university_id', 'status'
+        'name', 'country_id', 'state_id', 'city_id','university_id', 'status'
     ];
 	
 	
-	public function city()
+	public function state()
     {
-        return $this->hasOne(City::class, 'id', 'city_id');
+        return $this->hasOne(Location::class, 'id', 'state_id');
     }
 	public function university()
     {

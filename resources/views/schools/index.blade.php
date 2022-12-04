@@ -27,9 +27,9 @@
 		  <div class="form-layout form-layout-1">
 		  <form action="{{ route('schools.index') }}" method="PUT">
 			@csrf
-			
-            <div class="row mg-b-25">
-             <h4 class="br-section-label">Filter By:</h4>
+			 <h4 class="br-section-label">Filter By:</h4>
+            <div class="row mg-b-5">
+            
 		  
               <div class="col-lg-3">
                 <div class="form-group mg-b-10-force">
@@ -37,7 +37,7 @@
                   <select class="form-control select2-show-search" id="country-dd" name="country_search">
 				  <option value="">Select</option>
                    @foreach($countries as $country)
-					<option value="{{$country->id}}">{{$country->name}}</option>
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -47,6 +47,14 @@
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">State: <span class="tx-danger">*</span></label>
                   <select class="form-control select2-show-search" data-placeholder="Choose state" id="state-dd" name="state_search">
+                    
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  <div class="col-lg-3">
+                <div class="form-group mg-b-10-force">
+                  <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" data-placeholder="Choose city" id="city-dd" name="city_search">
                     
                   </select>
                 </div>
@@ -78,6 +86,7 @@
             <th>Name</th>
             <th>Country</th>
 			<th>State</th>
+			<th>City</th>
 			<th>Board</th>
 			<th>Status</th>
 			<th>Created At</th>
@@ -91,8 +100,15 @@
 	    <tr>
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $school->name }}</td>
-	        <td>{{ $school->country->name }}</td>
-			<td>{{ $school->state->name }}</td>
+	        <td>{{ $school->state->country_name }}</td>
+			<td>{{ $school->state->state_name }}</td>
+			<td>
+			@php
+				$city = json_decode($school->state->cities, true);
+				$key = array_search($school->city_id, array_column($city, 'id'));
+			@endphp
+			{{$city[$key]['name']}}
+			</td>
 			<td>{{ $school->board->name }}</td>
 			<td>@if($school->status=='1')
 					<span class='text-success'>Active</span>
@@ -123,4 +139,83 @@
 
         </div><!-- br-section-wrapper -->
       </div><!-- br-pagebody -->
+	  <script>
+        $(document).ready(function () {
+            $('#country-dd').on('change', function () {
+                var idCountry = this.value;
+                $('#state-dd').html('<option value="">Select State</option>');
+                $.ajax({
+                    url: "{{url('api/fetch-states')}}",
+                    type: "POST",
+                    data: {
+                        country_id: idCountry,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#state-dd').html('<option value="">Select State</option>');
+                        $.each(result.states, function (key, value) {
+                            $("#state-dd").append('<option value="' + value
+                                .id + '">' + value.state_name + '</option>');
+                        });
+
+                    }
+                });
+            });
+			
+			$('#state-dd').on('change', function () {
+                var idState = this.value;
+                
+                $.ajax({
+                    url: "{{url('api/fetch-cities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.cities ==null){
+							$('#city-dd').html('<option value="">No City Found</option>');
+						}
+						else{
+                        $('#city-dd').html('<option value="">Select City</option>');
+                        $.each(result.cities, function (key, value) {
+                            $("#city-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
+                });
+            });
+			$('#city-dd').on('change', function () {
+                var idState = $('#state-dd').val();
+                
+                $.ajax({
+                    url: "{{url('api/fetch-universities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.universities ==null){
+							$('#university-dd').html('<option value="">No University Found</option>');
+						}
+						else{
+                        $('#university-dd').html('<option value="">Select University</option>');
+                        $.each(result.universities, function (key, value) {
+                            $("#university-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
+                });
+            });
+            });
+       
+    </script>
 @endsection

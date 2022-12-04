@@ -73,6 +73,13 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::resource('locations', LocationController::class);
 	Route::post('api/fetch-states', [LocationController::class, 'fetchState']);
 	Route::post('api/fetch-cities', [LocationController::class, 'fetchCity']);
+	Route::get('import-universities', [UniversityController::class, 'universityImport'])->name('import-universities');
+	Route::post('importfile-universities', [UniversityController::class, 'universitiesFileImport'])->name('file-import-university');
+	Route::post('api/fetch-universities', [UniversityController::class, 'fetchUniversity']);
+	Route::get('import-colleges', [CollegeController::class, 'collegeImport'])->name('import-colleges');
+	Route::post('importfile-colleges', [CollegeController::class, 'collegesFileImport'])->name('file-import-college');
+	Route::post('add-city', [LocationController::class, 'addCity'])->name('add-city');
+	Route::post('add-villege', [LocationController::class, 'addVillege'])->name('add-villege');
 	
 	
 });

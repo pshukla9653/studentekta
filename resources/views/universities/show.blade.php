@@ -29,7 +29,13 @@
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>State:</strong>
-                {{ $university->state->name }}
+                {{ $university->state->state_name }}
+            </div>
+        </div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Country:</strong>
+                {{ $university->state->country_name }}
             </div>
         </div>
 		

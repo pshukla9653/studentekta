@@ -6,7 +6,7 @@
 <div class="br-pagetitle">
         <i class="icon ion-ios-home-outline"></i>
         <div>
-          <h2> Show Caste</h2>
+          <h2> Show Competitive Exam</h2>
           <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
         </div>
 		 <div class="pull-right">
@@ -17,7 +17,7 @@
 </div>
 <div class="br-pagebody">
         <div class="br-section-wrapper">
-          <h6 class="br-section-label">Show Exam</h6>
+          <h6 class="br-section-label">Competitive Exam</h6>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">

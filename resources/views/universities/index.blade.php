@@ -9,7 +9,8 @@
         </div>
 		 <div class="pull-right">
            
-                <a class="btn btn-success" href="{{ route('universities.create') }}"> Create New University</a>            
+                <a class="btn btn-success" href="{{ route('universities.create') }}"> Create New University</a> 
+					<a class="btn btn-success" href="{{ route('import-universities') }}"> Import Universities</a>
         </div>
 </div>
 
@@ -37,7 +38,7 @@
                   <select class="form-control select2-show-search" id="country-dd" name="country_search">
 				  <option value="">Select</option>
                    @foreach($countries as $country)
-					<option value="{{$country->id}}">{{$country->name}}</option>
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -68,7 +69,7 @@
             <th style="style=width:20%!important;">Name</th>
             
 			<th>State</th>
-			
+			<th>Country</th>
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
@@ -81,8 +82,8 @@
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $university->name }}</td>
 
-			<td>{{ $university->state->name }}</td>
-			
+			<td>{{ $university->state->country_name }}</td>
+			<td>{{ $university->state->state_name }}</td>
 			<td>@if($university->status=='1')
 					<span class='text-success'>Active</span>
 				@else
@@ -129,7 +130,7 @@
                         $('#state-dd').html('<option value="">Select State</option>');
                         $.each(result.states, function (key, value) {
                             $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                                .id + '">' + value.state_name + '</option>');
                         });
 
                     }

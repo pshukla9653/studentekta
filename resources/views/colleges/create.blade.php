@@ -38,7 +38,7 @@
                   <select class="form-control select2-show-search" name="country_id" id="country-dd">
 				  <option value="">Select</option>
                     @foreach($countries as $country)
-					<option value="{{$country->id}}">{{$country->name}}</option>
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -64,11 +64,8 @@
 			<div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group mg-b-10-force">
                   <label class="form-control-label">University: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" name="university_id">
-				  <option value="">Select</option>
-                   @foreach($universities as $university)
-					<option value="{{$university->id}}">{{$university->name}}</option>
-                   @endforeach 
+                   <select class="form-control select2-show-search" data-placeholder="Choose university" id="university-dd" name="university_id">
+                   
                   </select>
                 </div>
 		    </div>
@@ -116,7 +113,7 @@
                         $('#state-dd').html('<option value="">Select State</option>');
                         $.each(result.states, function (key, value) {
                             $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                                .id + '">' + value.state_name + '</option>');
                         });
 
                     }
@@ -125,7 +122,7 @@
 			
 			$('#state-dd').on('change', function () {
                 var idState = this.value;
-                $('#city-dd').html('<option value="">Select City</option>');
+                
                 $.ajax({
                     url: "{{url('api/fetch-cities')}}",
                     type: "POST",
@@ -135,12 +132,44 @@
                     },
                     dataType: 'json',
                     success: function (result) {
+						if(result.cities ==null){
+							$('#city-dd').html('<option value="">No City Found</option>');
+						}
+						else{
                         $('#city-dd').html('<option value="">Select City</option>');
                         $.each(result.cities, function (key, value) {
                             $("#city-dd").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
-                    }
+						}
+                    },
+					
+                });
+            });
+			$('#city-dd').on('change', function () {
+                var idState = $('#state-dd').val();
+                
+                $.ajax({
+                    url: "{{url('api/fetch-universities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.universities ==null){
+							$('#university-dd').html('<option value="">No University Found</option>');
+						}
+						else{
+                        $('#university-dd').html('<option value="">Select University</option>');
+                        $.each(result.universities, function (key, value) {
+                            $("#university-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
                 });
             });
             });

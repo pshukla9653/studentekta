@@ -48,7 +48,7 @@ class ProfessionController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:professions|alpha_num',
+            'name' => 'required|unique:professions',
             'status' => 'required',
         ]);
     

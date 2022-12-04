@@ -11,7 +11,7 @@
         </div>
 		 <div class="pull-right">
            
-                <a class="btn btn-success" href="{{ route('schools.index') }}"> Back</a>
+                <a class="btn btn-success" href="{{ route('colleges.index') }}"> Back</a>
               
         </div>
 </div>
@@ -27,16 +27,23 @@
         </div>
         
 		
-		<div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>City:</strong>
-                {{ $college->city->name }}
-            </div>
-        </div>
+		
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>University:</strong>
                 {{ $college->university->name }}
+            </div>
+        </div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Country:</strong>
+                {{ $college->state->country_name }}
+            </div>
+        </div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>State:</strong>
+                {{ $college->state->state_name }}
             </div>
         </div>
 		<div class="col-xs-12 col-sm-12 col-md-12">

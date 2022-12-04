@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\State;
+use App\Models\Location;
+
 
 class University extends Model
 {
@@ -15,13 +16,15 @@ class University extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'state_id',  'status'
+        'name', 'country_id', 'state_id',  'status'
     ];
 	
 	
 	public function state()
     {
-        return $this->hasOne(State::class, 'id', 'state_id');
+        return $this->hasOne(Location::class, 'id', 'state_id');
     }
+	
+	
 	
 }

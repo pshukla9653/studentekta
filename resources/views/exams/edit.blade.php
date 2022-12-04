@@ -6,7 +6,7 @@
 <div class="br-pagetitle">
         <i class="icon ion-ios-home-outline"></i>
         <div>
-          <h2>Edit Exam</h2>
+          <h2>Edit Competitive Exam</h2>
           <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
         </div>
 		 <div class="pull-right">
@@ -28,7 +28,7 @@
     @endif
 <div class="br-pagebody">
         <div class="br-section-wrapper">
-          <h6 class="br-section-label">Edit Exam</h6>
+          <h6 class="br-section-label">Edit Competitive Exam</h6>
 
     <form action="{{ route('exams.update',$exam->id) }}" method="POST">
     	@csrf

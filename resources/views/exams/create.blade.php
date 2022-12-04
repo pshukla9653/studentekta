@@ -4,7 +4,7 @@
 <div class="br-pagetitle">
         <i class="icon ion-ios-home-outline"></i>
         <div>
-          <h2>Add New Exam</h2>
+          <h2>Add New Competitive Exam</h2>
           <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
         </div>
 		 <div class="pull-right">
@@ -27,7 +27,7 @@
 
 <div class="br-pagebody">
         <div class="br-section-wrapper">
-          <h6 class="br-section-label">Add New Exam</h6>
+          <h6 class="br-section-label">Add New Competitive Exam</h6>
     <form action="{{ route('exams.store') }}" method="POST">
     	@csrf
 

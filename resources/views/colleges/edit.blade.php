@@ -40,7 +40,7 @@
                   <select class="form-control select2-show-search" name="country_id">
 				  <option value="">Select</option>
                     @foreach($countries as $country)
-					<option value="{{$country->id}}" {{$college->country_id==$country->id?'selected':''}}>{{$country->name}}</option>
+					<option value="{{$country->country_id}}" {{$college->country_id==$country->country_id?'selected':''}}>{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -51,22 +51,12 @@
                   <select class="form-control select2-show-search" name="state_id" id="state-dd">
 				  <option value="">Select</option>
 					@foreach($states as $state)
-					<option value="{{$state->id}}" {{$college->state_id==$state->id?'selected':''}}>{{$state->name}}</option>
+					<option value="{{$state->id}}" {{$college->state_id==$state->id?'selected':''}}>{{$state->state_name}}</option>
                    @endforeach
                   </select>
                 </div>
 		    </div>
-			<div class="col-xs-12 col-sm-12 col-md-12">
-		        <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">City: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" name="city_id" id="city-dd">
-				  <option value="">Select</option>
-					@foreach($cities as $city)
-					<option value="{{$city->id}}" {{$college->city_id==$city->id?'selected':''}}>{{$city->name}}</option>
-                   @endforeach
-                  </select>
-                </div>
-		    </div>
+			
 						<div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group mg-b-10-force">
                   <label class="form-control-label">University: <span class="tx-danger">*</span></label>

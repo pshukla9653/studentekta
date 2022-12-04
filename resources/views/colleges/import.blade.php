@@ -4,12 +4,12 @@
 <div class="br-pagetitle">
         <i class="icon ion-ios-home-outline"></i>
         <div>
-          <h2>Add New School</h2>
+          <h2>Import Colleges</h2>
           <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
         </div>
 		 <div class="pull-right">
             
-                <a class="btn btn-success" href="{{ route('schools.index') }}"> Back</a>
+                <a class="btn btn-success" href="{{ route('colleges.index') }}"> Back</a>
         </div>
 </div>
 
@@ -26,8 +26,8 @@
 
 <div class="br-pagebody">
         <div class="br-section-wrapper">
-          <h6 class="br-section-label">Add New School</h6>
-    <form action="{{ route('schools.store') }}" method="POST">
+          <h6 class="br-section-label">Import Colleges</h6>
+    <form action="{{ route('file-import-college') }}" method="POST" enctype="multipart/form-data">
     	@csrf
 
 
@@ -63,20 +63,20 @@
 		    </div>
 			<div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">Board: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" name="board_id">
-				  <option value="">Select</option>
-                   @foreach($boards as $board)
-					<option value="{{$board->id}}">{{$board->name}}</option>
-                   @endforeach 
+                  <label class="form-control-label">University: <span class="tx-danger">*</span></label>
+                   <select class="form-control select2-show-search" data-placeholder="Choose university" id="university-dd" name="university_id">
+                   
                   </select>
                 </div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Name:</strong>
-		            <input type="text" name="name" class="form-control" placeholder="Name">
+		            <div class="custom-file">
+						<input type="file" name="file" id="file" class="custom-file-input">
+						<label class="custom-file-label">Choose file</label>
+					</div>
 		        </div>
+				<span class="tx-danger">(Fields Name for Excel: name, status)</span>	
 		    </div>
 		    
 			<div class="col-xs-12 col-sm-12 col-md-12">

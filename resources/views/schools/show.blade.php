@@ -28,19 +28,23 @@
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Country:</strong>
-                {{ $school->country->name }}
+                {{ $school->state->country_name }}
             </div>
         </div>
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>State:</strong>
-                {{ $school->state->name }}
+                {{ $school->state->state_name }}
             </div>
         </div>
 		<div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>City:</strong>
-                {{ $school->city->name }}
+                @php
+				$city = json_decode($school->state->cities, true);
+				$key = array_search($school->city_id, array_column($city, 'id'));
+			@endphp
+			{{$city[$key]['name']}}
             </div>
         </div>
 		<div class="col-xs-12 col-sm-12 col-md-12">

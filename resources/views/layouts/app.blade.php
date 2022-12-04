@@ -26,6 +26,19 @@
 
     <!-- Bracket CSS -->
     <link rel="stylesheet" href="{{ asset('backend/css/bracket.css') }}">
+	<style>
+	.select2-close-mask{
+    z-index: 2099;
+}
+.select2-dropdown{
+    z-index: 3051;
+	width:100 !important%;
+}
+.select2-container {
+    width: 100% !important;
+    padding: 0;
+}
+	</style>
   </head>
 
   <body>
@@ -52,7 +65,7 @@
             <li class="sub-item"><a href="{{ route('locations.index') }}" class="sub-link">Manage Location</a></li>
 			<li class="sub-item"><a href="{{ route('boards.index') }}" class="sub-link">Manage Board</a></li>
 			<li class="sub-item"><a href="{{ route('courses.index') }}" class="sub-link">Manage Course</a></li>
-			<li class="sub-item"><a href="{{ route('exams.index') }}" class="sub-link">Manage Exam</a></li>
+			<li class="sub-item"><a href="{{ route('exams.index') }}" class="sub-link">Manage Competitive Exam</a></li>
 			<li class="sub-item"><a href="{{ route('castes.index') }}" class="sub-link">Manage Caste</a></li>
 			<li class="sub-item"><a href="{{ route('toungues.index') }}" class="sub-link">Manage Mother Toungue</a></li>
 			<li class="sub-item"><a href="{{ route('passouts.index') }}" class="sub-link">Manage Passout Year</a></li>
@@ -686,7 +699,7 @@
     <script>
       $(function(){
         'use strict'
-
+		
         // FOR DEMO ONLY
         // menu collapsed by default during first page load or refresh with screen
         // having a size between 992px and 1299px. This is intended on this page only
@@ -719,6 +732,7 @@
 });
       });
     </script>
+
   </body>
 
 </html>

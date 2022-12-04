@@ -9,7 +9,8 @@
         </div>
 		 <div class="pull-right">
            
-                <a class="btn btn-success" href="{{ route('colleges.create') }}"> Create New College</a>            
+                <a class="btn btn-success" href="{{ route('colleges.create') }}"> Create New College</a> 
+				<a class="btn btn-success" href="{{ route('import-colleges') }}"> Import Colleges</a> 				
         </div>
 </div>
 
@@ -37,7 +38,7 @@
                   <select class="form-control select2-show-search" id="country-dd" name="country_search">
 				  <option value="">Select</option>
                    @foreach($countries as $country)
-					<option value="{{$country->id}}">{{$country->name}}</option>
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
                    @endforeach
                   </select>
                 </div>
@@ -62,11 +63,8 @@
 			  <div class="col-lg-3">
                 <div class="form-group mg-b-10-force">
                   <label class="form-control-label">University: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2-show-search" data-placeholder="Choose university" name="university_search">
-                    <option value="">Select</option>
-                   @foreach($universities as $university)
-					<option value="{{$university->id}}">{{$university->name}}</option>
-                   @endforeach
+                  <select class="form-control select2-show-search" data-placeholder="Choose university" id="university-dd" name="university_search">
+                   
                   </select>
                 </div>
               </div><!-- col-4 -->
@@ -84,8 +82,10 @@
 		<tr>
             <th>No</th>
             <th>Name</th>
-            <th>City</th>
+            
 			<th>University</th>
+			<th>Country</th>
+			<th>State</th>
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
@@ -98,8 +98,10 @@
 	        <td>{{$loop->iteration}}</td>
 	        <td>{{ $college->name }}</td>
 	        
-			<td>{{ $college->city->name }}</td>
+			
 			<td>{{ $college->university->name }}</td>
+			<td>{{ $college->state->country_name }}</td>
+			<td>{{ $college->state->state_name }}</td>
 			<td>@if($college->status=='1')
 					<span class='text-success'>Active</span>
 				@else
@@ -146,14 +148,65 @@
                         $('#state-dd').html('<option value="">Select State</option>');
                         $.each(result.states, function (key, value) {
                             $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
+                                .id + '">' + value.state_name + '</option>');
                         });
 
                     }
                 });
             });
 			
-			
+			$('#state-dd').on('change', function () {
+                var idState = this.value;
+                
+                $.ajax({
+                    url: "{{url('api/fetch-cities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.cities ==null){
+							$('#city-dd').html('<option value="">No City Found</option>');
+						}
+						else{
+                        $('#city-dd').html('<option value="">Select City</option>');
+                        $.each(result.cities, function (key, value) {
+                            $("#city-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
+                });
+            });
+			$('#city-dd').on('change', function () {
+                var idState = $('#state-dd').val();
+                
+                $.ajax({
+                    url: "{{url('api/fetch-universities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+						if(result.universities ==null){
+							$('#university-dd').html('<option value="">No University Found</option>');
+						}
+						else{
+                        $('#university-dd').html('<option value="">Select University</option>');
+                        $.each(result.universities, function (key, value) {
+                            $("#university-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+						}
+                    },
+					
+                });
+            });
             });
        
     </script>
