@@ -36,7 +36,10 @@ class UniversityController extends Controller
 	   $universities =array();
 	   
 		if($request->input('btn')){
+			request()->validate([
+            'country_search' => 'required',
 			
+        ]);
             
 			if($request->input('country_search') && !$request->input('state_search')){
 				$find['country_id'] = $request->input('country_search');
@@ -168,7 +171,9 @@ class UniversityController extends Controller
         ]);
 	
         Excel::import(new UniversityImport, $request->file('file')->store('temp'));
-        return back()->with('success', 'Universities Imported Successfully.');;
+        
+		return redirect()->route('import-universities')
+                        ->with('success','Universities Imported Successfully');
     }
 	
 	

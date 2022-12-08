@@ -5,12 +5,14 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>Location Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
            
-                <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo1" data-effect="effect-newspaper"> Create New city</a> 
-				<a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo2" data-effect="effect-newspaper"> Create New Villege</a>            
+                <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo1" data-effect="effect-newspaper"> Create New city</a>
+				<a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo2" data-effect="effect-newspaper"> Import city</a>
+				<a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo3" data-effect="effect-newspaper"> Create New Villege</a>
+				<a class="btn btn-success" href="#" data-toggle="modal" data-target="#modaldemo4" data-effect="effect-newspaper"> Import Villege</a>
         </div>
 </div>
 
@@ -24,6 +26,16 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+@if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 <div class="br-pagebody">
         <div class="br-section-wrapper">
           <h6 class="br-section-label">Location List</h6>
@@ -86,6 +98,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
+			<th>Created By</th>
+			<th>Updated By</th>
             
         </tr>
 		</thead>
@@ -104,7 +118,20 @@
 				@endif</td>
 			<td>{{ $state->created_at }}</td>
 			<td>{{ $state->updated_at }}</td>	
-	        
+	        <td>
+			@php
+			if($state->createdby !=null){
+				$user = json_decode($state->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($state->updatedby !=null){
+				$user = json_decode($state->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	    </tr>
 	    @endforeach
 		</tbody>
@@ -124,7 +151,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
-            
+            <th>Created By</th>
+			<th>Updated By</th>
         </tr>
 		</thead>
 		<tbody>
@@ -144,7 +172,20 @@
 				@endif</td>
 			<td>{{ $data['created_at'] }}</td>
 			<td>{{ $data['updated_at'] }}</td>	
-	        
+	        <td>
+			@php
+			if($city->createdby !=null){
+				$user = json_decode($city->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($city->updatedby !=null){
+				$user = json_decode($city->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	    </tr>
 	    @endforeach
 		</tbody>
@@ -163,7 +204,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
-            
+            <th>Created By</th>
+			<th>Updated By</th>
         </tr>
 		</thead>
 		<tbody>
@@ -183,7 +225,20 @@
 				@endif</td>
 			<td>{{ $data['created_at'] }}</td>
 			<td>{{ $data['updated_at'] }}</td>	
-	        
+	        <td>
+			@php
+			if($villege->createdby !=null){
+				$user = json_decode($villege->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($villege->updatedby !=null){
+				$user = json_decode($villege->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	    </tr>
 	    @endforeach
 		</tbody>
@@ -253,8 +308,72 @@
             </div><!-- modal-dialog -->
           </div><!-- modal -->
 		  
-		  <!-- VILLEGE MODAL -->
+		  <!-- CITY MODAL -->
           <div id="modaldemo2" class="modal fade effect-newspaper" style="overflow:hidden;">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bd-0 tx-14">
+                <div class="modal-header pd-y-20 pd-x-25">
+                  <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Import City</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="">
+		  <form action="{{ route('file-import-villege') }}" method="POST" enctype="multipart/form-data">
+			@csrf
+			
+            <div class="row">
+            
+		  
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" id="country-state-import" name="country_id">
+				  <option value="">Select</option>
+                   @foreach($countries as $country)
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
+                   @endforeach
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  
+			  <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="form-control-label">State: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" data-placeholder="Choose state" id="state-state-import" name="state_id">
+                    
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  <div class="col-xs-12 col-sm-12 col-md-12">
+		        <div class="form-group">
+		            <div class="custom-file">
+						<input type="file" name="file" id="file" class="custom-file-input">
+						<label class="custom-file-label">Choose file</label>
+					</div>
+		        </div>
+				<span class="tx-danger">(Fields Name for Excel: name, status)</span>	
+		    </div>
+            </div><!-- row -->
+
+           
+			
+          </div><!-- form-layout -->
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Save</button>
+                  <button type="button" class="btn btn-secondary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-dismiss="modal">Close</button>
+                </div>
+				</form>
+              </div>
+            </div><!-- modal-dialog -->
+          </div><!-- modal -->
+		  
+		  
+		  
+		  <!-- VILLEGE MODAL -->
+          <div id="modaldemo3" class="modal fade effect-newspaper" style="overflow:hidden;">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content bd-0 tx-14">
                 <div class="modal-header pd-y-20 pd-x-25">
@@ -319,128 +438,74 @@
               </div>
             </div><!-- modal-dialog -->
           </div><!-- modal -->
-	  <script>
-        $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $('#state-dd').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
+		  
+		  <!-- VILLEGE MODAL -->
+          <div id="modaldemo4" class="modal fade effect-newspaper" style="overflow:hidden;">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bd-0 tx-14">
+                <div class="modal-header pd-y-20 pd-x-25">
+                  <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Import Villege</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="">
+		  <form action="{{ route('file-import-school') }}" method="POST" enctype="multipart/form-data">
+			@csrf
+			
+            <div class="row">
+            
+		  
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="form-control-label">Country: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" id="country-villege-import" name="country_id">
+				  <option value="">Select</option>
+                   @foreach($countries as $country)
+					<option value="{{$country->country_id}}">{{$country->country_name}}</option>
+                   @endforeach
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  
+			  <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="form-control-label">State: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" data-placeholder="Choose state" id="state-villege-import" name="state_id">
+                    
+                  </select>
+                </div>
+              </div><!-- col-4 -->
+			  <div class="col-lg-12">
+                <div class="form-group">
+                  <label class="form-control-label">City: <span class="tx-danger">*</span></label>
+                  <select class="form-control select2-show-search" data-placeholder="Choose city" id="city-villege-import" name="city_id">
+                    
+                  </select>
+                </div>
+              </div>
+			  <div class="col-xs-12 col-sm-12 col-md-12">
+		        <div class="form-group">
+		            <div class="custom-file">
+						<input type="file" name="file" id="file" class="custom-file-input">
+						<label class="custom-file-label">Choose file</label>
+					</div>
+		        </div>
+				<span class="tx-danger">(Fields Name for Excel: name, status)</span>	
+		    </div>
+            </div><!-- row -->
 
-                    }
-                });
-            });
+            
 			
-			$('#state-dd').on('change', function () {
-                var idState = this.value;
-                
-                $.ajax({
-                    url: "{{url('api/fetch-cities')}}",
-                    type: "POST",
-                    data: {
-                        state_id: idState,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-						if(result.cities ==null){
-							$('#city-dd').html('<option value="">No City Found</option>');
-						}
-						else{
-                        $('#city-dd').html('<option value="">Select City</option>');
-                        $.each(result.cities, function (key, value) {
-                            $("#city-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-						}
-                    },
-					
-                });
-            });
-			
-			$('#country-city').on('change', function () {
-                var idCountry = this.value;
-                $('#state-city').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-city').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-city").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
-
-                    }
-                });
-            });
-			$('#country-villege').on('change', function () {
-                var idCountry = this.value;
-                $('#state-villege').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-villege').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-villege").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
-
-                    }
-                });
-            });
-			
-			$('#state-villege').on('change', function () {
-                var idState = this.value;
-                
-                $.ajax({
-                    url: "{{url('api/fetch-cities')}}",
-                    type: "POST",
-                    data: {
-                        state_id: idState,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-						if(result.cities ==null){
-							$('#city-villege').html('<option value="">No City Found</option>');
-						}
-						else{
-                        $('#city-villege').html('<option value="">Select City</option>');
-                        $.each(result.cities, function (key, value) {
-                            $("#city-villege").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-						}
-                    },
-					
-                });
-            });
-			
-            });
-       
-    </script>
+          </div><!-- form-layout -->
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Save</button>
+                  <button type="button" class="btn btn-secondary tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-dismiss="modal">Close</button>
+                </div>
+				</form>
+              </div>
+            </div><!-- modal-dialog -->
+          </div><!-- modal -->
 @endsection

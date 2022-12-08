@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h2>Update City</h2>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
             @can('country-list')
@@ -94,30 +94,5 @@
 
  </div><!-- br-section-wrapper -->
       </div><!-- br-pagebody -->
-<script>
-        $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $("#state-dd").html('');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-                        
-                    }
-                });
-            });
-            });
-       
-    </script>
+
 @endsection

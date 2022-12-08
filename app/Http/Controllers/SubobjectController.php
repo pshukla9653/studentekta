@@ -65,7 +65,7 @@ class SubobjectController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:subobjects,name',
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',
@@ -122,7 +122,7 @@ class SubobjectController extends Controller
     public function update(Request $request, Subobject $subobject)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:subobjects,name'.$subobject->id,
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Location;
 use App\Models\Board;
 use App\Models\School;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SchoolImport;
 class SchoolController extends Controller
 {
             /**
@@ -37,7 +39,10 @@ class SchoolController extends Controller
 	   
 	   //dd($formolddata);
 		if($request->input('btn')){
+			request()->validate([
+            'country_search' => 'required',
 			
+        ]);
             if($request->input('country_search') && !$request->input('state_search') && !$request->input('city_search')){
 				$find['country_id'] = $request->input('country_search');
 			}
@@ -84,7 +89,7 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:schools',
+            'name' => 'required|unique:schools,name',
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',
@@ -115,11 +120,11 @@ class SchoolController extends Controller
      */
     public function edit(School $school)
     {	$countries 	= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
-		$states = 		Location::where("country_id", $school->country_id)->get();
+		$states = 		Location::where("country_id", $school->country_id)->orderBy('state_name', 'ASC')->get();
 		$citydata = Location::where("id", $school->state_id)->get();
 		$cities = json_decode($citydata[0]['cities'], true);
 		//dd($cities);
-		$boards = Board::all();
+		$boards = Board::all()->sortBy('name');
         return view('schools.edit',compact('school','countries','states', 'boards','cities'));
     }
     
@@ -133,7 +138,7 @@ class SchoolController extends Controller
     public function update(Request $request, School $school)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:schools,name,'.$school->id,
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',
@@ -158,6 +163,33 @@ class SchoolController extends Controller
     
         return redirect()->route('schools.index')
                         ->with('success','School deleted successfully');
+    }
+	
+	/**
+    * @return \Illuminate\Support\Collection
+    */
+    public function schoolImport()
+    {
+		$countries 		= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
+		$boards = Board::all()->sortBy("name");
+       return view('schools.import', compact('countries','boards'));
+    }
+   
+	/**
+    * @return \Illuminate\Support\Collection
+    */
+    public function schoolsFileImport(Request $request) 
+    {	
+		request()->validate([
+            'country_id' => 'required',
+			'state_id' => 'required',
+			'city_id' => 'required',
+			'board_id' => 'required',
+        ]);
+	
+        Excel::import(new SchoolImport, $request->file('file')->store('temp'));
+        return redirect()->route('import-schools')
+                        ->with('success','School imported successfully');
     }
 	
 }

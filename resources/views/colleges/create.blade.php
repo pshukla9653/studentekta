@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h2>Add New College</h2>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
             
@@ -98,54 +98,7 @@
       </div><!-- br-pagebody -->
 <script>
         $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $('#state-dd').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
-
-                    }
-                });
-            });
-			
-			$('#state-dd').on('change', function () {
-                var idState = this.value;
-                
-                $.ajax({
-                    url: "{{url('api/fetch-cities')}}",
-                    type: "POST",
-                    data: {
-                        state_id: idState,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-						if(result.cities ==null){
-							$('#city-dd').html('<option value="">No City Found</option>');
-						}
-						else{
-                        $('#city-dd').html('<option value="">Select City</option>');
-                        $.each(result.cities, function (key, value) {
-                            $("#city-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-						}
-                    },
-					
-                });
-            });
+            
 			$('#city-dd').on('change', function () {
                 var idState = $('#state-dd').val();
                 

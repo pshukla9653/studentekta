@@ -12,6 +12,9 @@ use App\Models\Exam;
 use App\Models\Course;
 use App\Models\Profession;
 use App\Models\Stclass;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 class Subobject extends Model
 {
    use HasFactory;
@@ -55,5 +58,31 @@ class Subobject extends Model
 	public function stclass()
     {
         return $this->hasOne(Stclass::class, 'id', 'stclass_id');
+    }
+	
+	public static function boot()
+     {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $user = Auth::user();           
+            $model->created_by = $user->id;
+			
+            
+        });
+        static::updating(function($model)
+        {
+            $user = Auth::user();
+            $model->updated_by = $user->id;
+        });       
+    }
+	public function createdby()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+	
+	public function updatedby()
+    {
+        return $this->hasOne(User::class, 'id', 'updated_by');
     }
 }

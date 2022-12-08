@@ -49,7 +49,7 @@ class MotherToungueController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:mother_toungues|alpha_num',
+            'name' => 'required|unique:mother_toungues,name',
             'status' => 'required',
         ]);
     
@@ -91,7 +91,7 @@ class MotherToungueController extends Controller
     public function update(Request $request, MotherToungue $toungue)
     {	
          request()->validate([
-            'name' => 'required|alpha_num',
+            'name' => 'required|unique:mother_toungues,name,'.$toungue->id,
             'status' => 'required',
         ]);
     

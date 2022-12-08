@@ -50,7 +50,7 @@ class PassoutYearController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:passout_years|alpha_num',
+            'name' => 'required|unique:passout_years,name',
             'status' => 'required',
         ]);
     
@@ -92,7 +92,7 @@ class PassoutYearController extends Controller
     public function update(Request $request, PassoutYear $passout)
     {
          request()->validate([
-            'name' => 'required|alpha_num',
+            'name' => 'required||unique:passout_years,name,'.$passout->id,
             'status' => 'required',
         ]);
     

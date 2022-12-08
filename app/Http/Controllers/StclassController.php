@@ -49,7 +49,7 @@ class StclassController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:stclasses|alpha_num',
+            'name' => 'required|unique:stclasses,name',
             'status' => 'required',
         ]);
     
@@ -91,7 +91,7 @@ class StclassController extends Controller
     public function update(Request $request, Stclass $stclass)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:stclasses,name,'.$stclass->id,
             'status' => 'required',
         ]);
     

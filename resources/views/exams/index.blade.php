@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>Competitive Exam Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
            
@@ -29,7 +29,9 @@
             <th>Name</th>
             <th>Status</th>
 			<th>Created At</th>
-<th>Updated At</th>
+			<th>Updated At</th>
+			<th>Created By</th>
+			<th>Updated By</th>
             <th>Action</th>
         </tr>
 		</thead>
@@ -44,7 +46,21 @@
 					<span class='text-danger'>Inactive</span>
 				@endif</td>
 			<td>{{ $exam->created_at }}</td>
-<td>{{ $exam->updated_at }}</td>
+			<td>{{ $exam->updated_at }}</td>
+			<td>
+			@php
+			if($exam->createdby !=null){
+				$user = json_decode($exam->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($exam->updatedby !=null){
+				$user = json_decode($exam->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	        <td>
                 <form action="{{ route('exams.destroy',$exam->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('exams.show',$exam->id) }}">Show</a>

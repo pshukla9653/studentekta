@@ -32,4 +32,30 @@ class Village extends Model
     {
         return $this->hasOne(City::class, 'id', 'city_id');
     }
+	
+	public static function boot()
+     {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $user = Auth::user();           
+            $model->created_by = $user->id;
+			
+            
+        });
+        static::updating(function($model)
+        {
+            $user = Auth::user();
+            $model->updated_by = $user->id;
+        });       
+    }
+	public function createdby()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
+	
+	public function updatedby()
+    {
+        return $this->hasOne(User::class, 'id', 'updated_by');
+    }
 }

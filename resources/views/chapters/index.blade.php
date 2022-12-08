@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>Chapter Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
            
@@ -59,6 +59,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
+			<th>Created By</th>
+<th>Updated By</th>
             <th>Action</th>
         </tr>
 		</thead>
@@ -75,6 +77,20 @@
 				@endif</td>
 			<td>{{ $chapter->created_at }}</td>
 				<td>{{ $chapter->updated_at }}</td>	
+				<td>
+			@php
+			if($chapter->createdby !=null){
+				$user = json_decode($chapter->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($chapter->updatedby !=null){
+				$user = json_decode($chapter->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	        <td>
                 <form action="{{ route('chapters.destroy',$chapter->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('chapters.show',$chapter->id) }}">Show</a>

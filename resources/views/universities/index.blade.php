@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>Universities Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
            
@@ -19,6 +19,16 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+@if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 <div class="br-pagebody">
         <div class="br-section-wrapper">
           <h6 class="br-section-label">Universities List</h6>
@@ -73,6 +83,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
+			<th>Created By</th>
+			<th>Updated By</th>
             <th>Action</th>
         </tr>
 		</thead>
@@ -91,6 +103,20 @@
 				@endif</td>
 			<td>{{ $university->created_at }}</td>
 				<td>{{ $university->updated_at }}</td>	
+				<td>
+			@php
+			if($university->createdby !=null){
+				$user = json_decode($university->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($university->updatedby !=null){
+				$user = json_decode($university->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	        <td>
                 <form action="{{ route('universities.destroy',$university->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('universities.show',$university->id) }}">Show</a>
@@ -113,32 +139,5 @@
 
         </div><!-- br-section-wrapper -->
       </div><!-- br-pagebody -->
-	  <script>
-        $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $('#state-dd').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
-
-                    }
-                });
-            });
-			
-			
-            });
-       
-    </script>
+	  
 @endsection

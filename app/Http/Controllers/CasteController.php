@@ -51,7 +51,7 @@ class CasteController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:castes|alpha_num',
+            'name' => 'required|unique:castes,name',
             'status' => 'required',
         ]);
     
@@ -93,7 +93,7 @@ class CasteController extends Controller
     public function update(Request $request, Caste $caste)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:castes,name,'.$caste->id,
             'status' => 'required',
         ]);
     

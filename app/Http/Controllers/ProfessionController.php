@@ -48,7 +48,7 @@ class ProfessionController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:professions',
+            'name' => 'required|unique:professions,name',
             'status' => 'required',
         ]);
     
@@ -90,7 +90,7 @@ class ProfessionController extends Controller
     public function update(Request $request, Profession $profession)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:professions,name,'.$profession->id,
             'status' => 'required',
         ]);
     

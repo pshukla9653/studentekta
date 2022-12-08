@@ -80,6 +80,9 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('importfile-colleges', [CollegeController::class, 'collegesFileImport'])->name('file-import-college');
 	Route::post('add-city', [LocationController::class, 'addCity'])->name('add-city');
 	Route::post('add-villege', [LocationController::class, 'addVillege'])->name('add-villege');
+	Route::get('import-schools', [SchoolController::class, 'schoolImport'])->name('import-schools');
+	Route::post('importfile-schools', [SchoolController::class, 'schoolsFileImport'])->name('file-import-school');
+	Route::post('importfile-villeges', [LocationController::class, 'villegesFileImport'])->name('file-import-villege');
 	
 	
 });

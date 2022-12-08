@@ -49,7 +49,7 @@ class StudyYearController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:study_years|alpha_num',
+            'name' => 'required|unique:study_years,name',
             'status' => 'required',
         ]);
     
@@ -91,7 +91,7 @@ class StudyYearController extends Controller
     public function update(Request $request, StudyYear $study)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:study_years,name,'.$study->id,
             'status' => 'required',
         ]);
     

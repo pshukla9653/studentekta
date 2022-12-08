@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h2>Import Universties</h2>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
             
@@ -67,16 +67,7 @@
 				<span class="tx-danger">(Fields Name for Excel: name, status)</span>	
 		    </div>
 		    
-			<div class="col-xs-12 col-sm-12 col-md-12">
-		        <div class="form-group mg-b-10-force">
-                  <label class="form-control-label">Status: <span class="tx-danger">*</span></label>
-                  <select class="form-control select2" name="status">
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
-                   
-                  </select>
-                </div>
-		    </div>
+			
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
 		            <button type="submit" class="btn btn-primary">Submit</button>
 		    </div>
@@ -87,51 +78,5 @@
 
  </div><!-- br-section-wrapper -->
       </div><!-- br-pagebody -->
-<script>
-        $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $('#state-dd').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
 
-                    }
-                });
-            });
-			
-			$('#state-dd').on('change', function () {
-                var idState = this.value;
-                $('#city-dd').html('<option value="">Select City</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-cities')}}",
-                    type: "POST",
-                    data: {
-                        state_id: idState,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#city-dd').html('<option value="">Select City</option>');
-                        $.each(result.cities, function (key, value) {
-                            $("#city-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-                    }
-                });
-            });
-            });
-       
-    </script>
 @endsection

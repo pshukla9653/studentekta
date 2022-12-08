@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>Board Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
             
@@ -30,26 +30,42 @@
             <th>Status</th>
 			<th>Created At</th>
 <th>Updated At</th>
+<th>Created By</th>
+<th>Updated By</th>
             <th>Action</th>
         </tr>
 		</thead>
 		<tbody>
-		@foreach ($boards as $course)
+		@foreach ($boards as $board)
 	    <tr>
 	        <td>{{$loop->iteration}}</td>
-	        <td>{{ $course->name }}</td>
-	        <td>@if($course->status=='1')
+	        <td>{{ $board->name }}</td>
+	        <td>@if($board->status=='1')
 					<span class='text-success'>Active</span>
 				@else
 					<span class='text-danger'>Inactive</span>
 				@endif</td>
-			<td>{{ $course->created_at }}</td>
-<td>{{ $course->updated_at }}</td>
+			<td>{{ $board->created_at }}</td>
+<td>{{ $board->updated_at }}</td>
+<td>
+			@php
+			if($board->createdby !=null){
+				$user = json_decode($board->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($board->updatedby !=null){
+				$user = json_decode($board->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	        <td>
-                <form action="{{ route('boards.destroy',$course->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('boards.show',$course->id) }}">Show</a>
+                <form action="{{ route('boards.destroy',$board->id) }}" method="POST">
+                    <a class="btn btn-info" href="{{ route('boards.show',$board->id) }}">Show</a>
                   
-                    <a class="btn btn-primary" href="{{ route('boards.edit',$course->id) }}">Edit</a>
+                    <a class="btn btn-primary" href="{{ route('boards.edit',$board->id) }}">Edit</a>
                   
 
 

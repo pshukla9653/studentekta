@@ -5,7 +5,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h4>College Management</h4>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
            
@@ -19,6 +19,16 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+@if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 <div class="br-pagebody">
         <div class="br-section-wrapper">
           <h6 class="br-section-label">Colleges List</h6>
@@ -89,6 +99,8 @@
 			<th>Status</th>
 			<th>Created At</th>
 			<th>Updated At</th>
+			<th>Created By</th>
+			<th>Updated By</th>
             <th>Action</th>
         </tr>
 		</thead>
@@ -109,6 +121,20 @@
 				@endif</td>
 			<td>{{ $college->created_at }}</td>
 			<td>{{ $college->updated_at }}</td>	
+			<td>
+			@php
+			if($college->createdby !=null){
+				$user = json_decode($college->createdby, true);
+				echo $user["name"];
+			}
+			@endphp
+			</td>
+			<td>@php
+			if($college->updatedby !=null){
+				$user = json_decode($college->updatedby, true);
+				echo $user["name"];
+			}
+			@endphp</td>
 	        <td>
                 <form action="{{ route('colleges.destroy',$college->id) }}" method="POST">
                     <a class="btn btn-info" href="{{ route('colleges.show',$college->id) }}">Show</a>
@@ -133,54 +159,6 @@
       </div><!-- br-pagebody -->
 	   <script>
         $(document).ready(function () {
-            $('#country-dd').on('change', function () {
-                var idCountry = this.value;
-                $('#state-dd').html('<option value="">Select State</option>');
-                $.ajax({
-                    url: "{{url('api/fetch-states')}}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#state-dd").append('<option value="' + value
-                                .id + '">' + value.state_name + '</option>');
-                        });
-
-                    }
-                });
-            });
-			
-			$('#state-dd').on('change', function () {
-                var idState = this.value;
-                
-                $.ajax({
-                    url: "{{url('api/fetch-cities')}}",
-                    type: "POST",
-                    data: {
-                        state_id: idState,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-						if(result.cities ==null){
-							$('#city-dd').html('<option value="">No City Found</option>');
-						}
-						else{
-                        $('#city-dd').html('<option value="">Select City</option>');
-                        $.each(result.cities, function (key, value) {
-                            $("#city-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-						}
-                    },
-					
-                });
-            });
 			$('#city-dd').on('change', function () {
                 var idState = $('#state-dd').val();
                 

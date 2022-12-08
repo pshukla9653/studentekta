@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Location;
 use Response;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SchoolImport;
 class LocationController extends Controller
 {
      /**
@@ -35,9 +37,13 @@ class LocationController extends Controller
 		$data['count'] =0;
 		
 		if($request->input('btn')){
+			request()->validate([
+            'country_search' => 'required',
+			
+        ]);
 			if($request->input('country_search') && !$request->input('state_search') && !$request->input('city_search')){
 				$datadisplay = 'state';
-				$data['states'] = Location::where("country_id", $request->input('country_search'))->get(["id", "state_name","country_name","status","created_at","updated_at"]);
+				$data['states'] = Location::where("country_id", $request->input('country_search'))->get(["id", "state_name","country_name","status","created_at","updated_at","created_by","updated_by"]);
 				if($data['states'] != null){
 				$data['count'] = count($data['states']);
 				}
@@ -47,7 +53,7 @@ class LocationController extends Controller
 			}
 			if($request->input('country_search') && $request->input('state_search') && !$request->input('city_search')){
 				$datadisplay = 'city';
-				$cities = Location::where("id", $request->input('state_search'))->get(["id", "state_name","country_name","cities", "status","created_at","updated_at"]);
+				$cities = Location::where("id", $request->input('state_search'))->get(["id", "state_name","country_name","cities", "status","created_at","updated_at","created_by","updated_by"]);
 				
 				$city = json_decode($cities, true);
 				$data['cities']  = json_decode($city[0]['cities'], true);
@@ -67,7 +73,7 @@ class LocationController extends Controller
 			if($request->input('country_search') && $request->input('state_search') && $request->input('city_search')){
 				$datadisplay = 'villege';
 				
-				$villeges = Location::where("id", $request->input('state_search'))->get(["id", "state_name","country_name","cities", "villeges","status","created_at","updated_at"]);
+				$villeges = Location::where("id", $request->input('state_search'))->get(["id", "state_name","country_name","cities", "villeges","status","created_at","updated_at","created_by","updated_by"]);
 				
 				$villege = json_decode($villeges, true);
 				
@@ -125,7 +131,7 @@ class LocationController extends Controller
 		}
 		else{
 			$cities_array = json_decode($cities[0]->cities, true);
-			dd($cities_array);
+			
 			if($cities_array == null){
 				$newcity['id'] = 1;
 				$newcity['name'] = $request->city_name;
@@ -209,4 +215,17 @@ class LocationController extends Controller
 		}
 	}
 	
+	public function villegesFileImport(Request $request) 
+    {	
+		request()->validate([
+            'country_id' => 'required',
+			'state_id' => 'required',
+			'city_id' => 'required',
+			'board_id' => 'required',
+        ]);
+	
+        Excel::import(new VillegeImport, $request->file('file')->store('temp'));
+        return redirect()->route('import-schools')
+                        ->with('success','School imported successfully');
+    }
 }

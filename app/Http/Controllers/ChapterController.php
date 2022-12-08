@@ -61,7 +61,7 @@ class ChapterController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:chapters|alpha_num',
+            'name' => 'required|unique:chapters,name',
             'subject_id' => 'required',
         ]);
     
@@ -103,7 +103,7 @@ class ChapterController extends Controller
     public function update(Request $request, Chapter $chapter)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:chapters,name,'.$chapter->id,
             'subject_id' => 'required',
         ]);
     

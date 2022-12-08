@@ -7,7 +7,7 @@
         <i class="icon ion-ios-home-outline"></i>
         <div>
           <h2>Edit Country</h2>
-          <p class="mg-b-0">Do bigger things with Bracket plus, the responsive bootstrap 4 admin template.</p>
+          
         </div>
 		 <div class="pull-right">
             @can('country-list')

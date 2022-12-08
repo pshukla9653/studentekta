@@ -50,7 +50,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:courses|alpha_num',
+            'name' => 'required|unique:courses,name',
             'status' => 'required',
         ]);
     
@@ -92,10 +92,10 @@ class CourseController extends Controller
     public function update(Request $request, Course $course)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:courses,name,'.$course->id,
             'status' => 'required',
         ]);
-    
+		
         $course->update($request->all());
     
         return redirect()->route('courses.index')

@@ -51,7 +51,7 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required|unique:exams|alpha_num',
+            'name' => 'required|unique:exams,name',
             'status' => 'required',
         ]);
     
@@ -93,7 +93,7 @@ class ExamController extends Controller
     public function update(Request $request, Exam $exam)
     {
          request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:exams,name,'.$exam->id,
             'status' => 'required',
         ]);
     

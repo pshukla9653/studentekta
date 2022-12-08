@@ -51,7 +51,7 @@ class BoardController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:boards,name',
             'status' => 'required',
         ]);
     
@@ -93,7 +93,7 @@ class BoardController extends Controller
     public function update(Request $request, Board $board)
     {
          request()->validate([
-            'name' => 'required|unique:boards|alpha_num',
+            'name' => 'required|unique:boards,name,'.$board->id,
             'status' => 'required',
         ]);
     

@@ -39,7 +39,10 @@ class CollegeController extends Controller
 	   $colleges =array();
 	   
 		if($request->input('btn')){
+			request()->validate([
+            'country_search' => 'required',
 			
+        ]);
             
 			if($request->input('country_search') && !$request->input('state_search') && !$request->input('city_search') && !$request->input('university_search')){
 				$find['country_id'] = $request->input('country_search');
@@ -61,7 +64,7 @@ class CollegeController extends Controller
 				$find['university_id'] = $request->input('university_search');
 			}
 			
-            $colleges = College::where($find)->get();
+            $colleges = College::where($find)->orderBy("name", "ASC")->get();
 			$collegescount = count($colleges);
             
         }
@@ -121,9 +124,9 @@ class CollegeController extends Controller
      */
     public function edit(College $college)
     {	$countries 	= Location::select('country_id', 'country_name')->groupBy('country_id')->orderBy('country_name','ASC')->get();
-		$states = 		Location::where("country_id", $college->country_id)->get();
+		$states = 		Location::where("country_id", $college->country_id)->orderBy('state_name','ASC')->get();
 		
-		$universities = University::where("state_id", $college->state_id)->get();
+		$universities = University::where("state_id", $college->state_id)->orderBy('name','ASC')->get();
         return view('colleges.edit',compact('college','countries','states', 'universities'));
     }
     
@@ -187,7 +190,8 @@ class CollegeController extends Controller
         ]);
 	
         Excel::import(new CollegeImport, $request->file('file')->store('temp'));
-        return back()->with('success', 'Colleges Imported Successfully.');;
+        return redirect()->route('import-colleges')
+                        ->with('success','College imported successfully');
     }
 	
 	

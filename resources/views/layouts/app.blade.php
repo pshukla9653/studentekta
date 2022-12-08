@@ -77,9 +77,10 @@
 			<li class="sub-item"><a href="{{ route('universities.index') }}" class="sub-link">Manage University</a></li>
 			<li class="sub-item"><a href="{{ route('colleges.index') }}" class="sub-link">Manage College</a></li>
 			<li class="sub-item"><a href="{{ route('schools.index') }}" class="sub-link">Manage School</a></li>
+			
+			<!----<li class="sub-item"><a href="{{ route('professions.index') }}" class="sub-link">Manage Profession</a></li>
 			<li class="sub-item"><a href="{{ route('eobjects.index') }}" class="sub-link">Manage Object</a></li>
-			<li class="sub-item"><a href="{{ route('professions.index') }}" class="sub-link">Manage Profession</a></li>
-			<li class="sub-item"><a href="{{ route('subobjects.index') }}" class="sub-link">Manage Sub Object</a></li>
+			<li class="sub-item"><a href="{{ route('subobjects.index') }}" class="sub-link">Manage Sub Object</a></li>--->
           </ul>
         </li><!-- br-menu-item -->
 
@@ -696,6 +697,7 @@
     <script src="{{ asset('/backend/js/bracket.js') }}"></script>
     <script src="{{ asset('/backend/js/ResizeSensor.js') }}"></script>
     <script src="{{ asset('/backend/js/dashboard.js') }}"></script>
+	<script src="{{ asset('/backend/js/custom_ajax.js') }}"></script>
     <script>
       $(function(){
         'use strict'
