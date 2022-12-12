@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Location;
 use Response;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\SchoolImport;
+use App\Imports\VillegeImport;
+use App\Imports\CityImport;
 class LocationController extends Controller
 {
      /**
@@ -69,19 +70,35 @@ class LocationController extends Controller
 				$data['status'] = $cities[0]['status'];
 				$data['created_at'] = $cities[0]['created_at'];
 				$data['updated_at'] = $cities[0]['updated_at'];
+				$data['created_by'] = $cities[0]['created_by'];
+				$data['updated_by'] = $cities[0]['updated_by'];
 			}
 			if($request->input('country_search') && $request->input('state_search') && $request->input('city_search')){
 				$datadisplay = 'villege';
 				
 				$villeges = Location::where("id", $request->input('state_search'))->get(["id", "state_name","country_name","cities", "villeges","status","created_at","updated_at","created_by","updated_by"]);
-				
+				$villege = array();
+				$villegelist = array();
 				$villege = json_decode($villeges, true);
-				
+				if($villege[0]['villeges'] != null){
 				$villegelist  = json_decode($villege[0]['villeges'], true);
-				if($villegelist !=null){
-				$data['villeges'] = $villegelist[$request->city_search];
-				$data['count'] = count($data['villeges']);
+				if(count($villegelist) !=0){
+					foreach($villegelist as $key => $value){
+						if($key == $request->city_search){
+							
+							$data['villeges'] = $villegelist[$request->city_search];
+							$data['count'] = count($data['villeges']);
+							break;
+						}
+						else{
+							return redirect()->route('locations.index')->with('error','No Villege Found!');
+						}
+					}
+				
 				}
+				}
+				
+				
 				else{
 					return redirect()->route('locations.index')->with('error','No Villege Found!');
 				}
@@ -98,6 +115,8 @@ class LocationController extends Controller
 				$data['status'] = $villeges[0]['status'];
 				$data['created_at'] = $villeges[0]['created_at'];
 				$data['updated_at'] = $villeges[0]['updated_at'];
+				$data['created_by'] = $villeges[0]['created_by'];
+				$data['updated_by'] = $villeges[0]['updated_by'];
 			}
             //dd($data);
         }
@@ -221,11 +240,24 @@ class LocationController extends Controller
             'country_id' => 'required',
 			'state_id' => 'required',
 			'city_id' => 'required',
-			'board_id' => 'required',
         ]);
 	
         Excel::import(new VillegeImport, $request->file('file')->store('temp'));
-        return redirect()->route('import-schools')
-                        ->with('success','School imported successfully');
+		
+		
+        return redirect()->route('locations.index');
+    }
+	public function citiesFileImport(Request $request) 
+    {	
+		request()->validate([
+            'country_id' => 'required',
+			'state_id' => 'required',
+			
+        ]);
+	
+        Excel::import(new CityImport, $request->file('file')->store('temp'));
+		
+		
+        return redirect()->route('locations.index');
     }
 }

@@ -27,6 +27,7 @@ use App\Http\Controllers\EobjectController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\SubobjectController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\Frontend\FrontendUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,15 +39,21 @@ use App\Http\Controllers\LocationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [FrontendUserController::class, 'index'])->name('/');
+Route::get('mobile', [FrontendUserController::class, 'authMobile'])->name('mobile');
+Route::post('api/fetch-mobile', [FrontendUserController::class, 'fetchStatus']);
+Route::get('frontend-register', [FrontendUserController::class, 'registration'])->name('frontend-register');
+Route::post('frontend-login', [FrontendUserController::class, 'registration'])->name('frontend-login');
+Route::post('otp-auth', [FrontendUserController::class, 'mobileAuthenticate'])->name('otp-auth');
+Route::post('dashbaord', [FrontendUserController::class, 'registration']);
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
+Route::group(['prefix'=>'admin'],function(){
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('countries', CountryController::class);
@@ -83,6 +90,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('import-schools', [SchoolController::class, 'schoolImport'])->name('import-schools');
 	Route::post('importfile-schools', [SchoolController::class, 'schoolsFileImport'])->name('file-import-school');
 	Route::post('importfile-villeges', [LocationController::class, 'villegesFileImport'])->name('file-import-villege');
+	Route::post('importfile-cities', [LocationController::class, 'citiesFileImport'])->name('file-import-city');
 	
-	
+});
 });

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>AppKit Mobile</title>
+<link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="styles/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="fonts/css/fontawesome-all.min.css">    
+<link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
+<link rel="apple-touch-icon" sizes="180x180" href="app/icons/icon-192x192.png">
+</head>
+
+<style>
+   
+</style>
+    
+<body class="theme-light">
+   
+    <div class="header header-fixed header-logo-center ">
+        <a href="index.html" class="header-title">
+            <img src="images/logo.png" alt="">
+        </a>
+        <a href="#" data-menu="menu-main" class="header-icon header-icon-1"><i class="fas fa-bars"></i></a>
+        <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-dark"><i class="fas fa-sun"></i></a>
+        <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-light"><i class="fas fa-moon"></i></a>
+        <a href="#" data-menu="menu-share" class="header-icon header-icon-2"><i class="fas fa-share-alt"></i></a>
+    </div>
+     
+<div id="preloader"><div class="spinner-border color-highlight" role="status"></div></div>
+    
+<div class="page-content  header-clear-medium">
+    <div class="card card-style">
+    <div class="content">
+    <div class="text-center">
+    <p class="font-600 color-highlight mb-n1">Let's start</p>
+    <h1 class="font-24">One Time Passcode</h1>
+    <p>
+    Enter your verification code below to verify your identity and access your account.
+    </p>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <strong>Success!</strong> <p class="font-20 font-900">Verification Code: 1556</p>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="inputwidthotp">
+                    <form action="registration.html" method="post" class="digit-group" data-group-name="digits" autocomplete="off">
+    
+                        <input type="hidden" value="9888888888" name="mobilenumber" maxlength="1">
+                        <input class="otp mx-1 rounded-sm text-center font-20 font-900" id="digit-1" name="digit-1" data-next="digit-2" type="tel" value="●" autofocus="" maxlength="1">
+                        <input class="otp mx-1 rounded-sm text-center font-20 font-900" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" type="tel" value="●" maxlength="1">
+                        <input class="otp mx-1 rounded-sm text-center font-20 font-900" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" type="tel" value="●" maxlength="1">
+                        <input class="otp mx-1 rounded-sm text-center font-20 font-900" id="digit-4" name="digit-4" data-previous="digit-3" type="tel" value="●" maxlength="1">
+                        
+                        <p class="text-center my-4 font-11">Didn't get your code? <a href="#">Resend Code</a></p>
+                    
+                        <button type="submit" class="btn btn-lg btn-l btn-info font-600 font-13 gradient-highlight mt-4 rounded-s border-0" >Next</button>
+                        
+                        </form>
+                </div>
+   
+    </div>
+    </div>
+    </div>
+    
+    </div>
+
+<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/custom.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#digit-1').select();
+    $('.digit-group').find('input').each(function() {
+        $(this).attr('maxlength', 1);
+        $(this).on('keyup', function(e) {
+            var parent = $($(this).parent());
+    
+            if(e.keyCode === 8 || e.keyCode === 37) {
+                var prev = parent.find('input#' + $(this).data('previous'));
+    
+                if(prev.length) {
+                    $(prev).select();
+                }
+            } else if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
+                var next = parent.find('input#' + $(this).data('next'));
+    
+                if(next.length) {
+                    $(next).select();
+                } else {
+                    if(parent.data('autosubmit')) {
+                        parent.submit();
+                    }
+                }
+            }
+        });
+    });
+    
+    
+    
+    $('#digit-1, #digit-2, #digit-3, #digit-4').click(function(){
+    
+    $(this).select();
+    });
+    
+    $("#phonenumber").keyup(function(){
+        var number = $(this).val();
+        if(number.length != 10) {
+        $("#phonenumberverify").html("Phone number must be 10 digits.");
+        $('#submitbutton').attr('disabled','disabled');
+        $("#phonenumber").focus();
+    
+    }else if(number.length == 10) {
+        $('#submitbutton').removeAttr('disabled');
+    }
+    });
+    
+    
+    
+    });
+    </script>
+</body>

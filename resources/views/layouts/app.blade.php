@@ -697,7 +697,8 @@
     <script src="{{ asset('/backend/js/bracket.js') }}"></script>
     <script src="{{ asset('/backend/js/ResizeSensor.js') }}"></script>
     <script src="{{ asset('/backend/js/dashboard.js') }}"></script>
-	<script src="{{ asset('/backend/js/custom_ajax.js') }}"></script>
+	
+	@include('layouts.script')
     <script>
       $(function(){
         'use strict'

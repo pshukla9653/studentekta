@@ -120,14 +120,14 @@
 			<td>{{ $state->updated_at }}</td>	
 	        <td>
 			@php
-			if($state->createdby !=null){
+			if($state->createdby !=0){
 				$user = json_decode($state->createdby, true);
 				echo $user["name"];
 			}
 			@endphp
 			</td>
 			<td>@php
-			if($state->updatedby !=null){
+			if($state->updatedby !=0){
 				$user = json_decode($state->updatedby, true);
 				echo $user["name"];
 			}
@@ -174,15 +174,15 @@
 			<td>{{ $data['updated_at'] }}</td>	
 	        <td>
 			@php
-			if($city->createdby !=null){
-				$user = json_decode($city->createdby, true);
+			if($data['created_by'] !=0){
+				$user = json_decode($data['created_by'], true);
 				echo $user["name"];
 			}
 			@endphp
 			</td>
 			<td>@php
-			if($city->updatedby !=null){
-				$user = json_decode($city->updatedby, true);
+			if($data['updated_by'] !=0){
+				$user = json_decode($data['updated_by'], true);
 				echo $user["name"];
 			}
 			@endphp</td>
@@ -227,15 +227,15 @@
 			<td>{{ $data['updated_at'] }}</td>	
 	        <td>
 			@php
-			if($villege->createdby !=null){
-				$user = json_decode($villege->createdby, true);
+			if($data['created_by'] !=0){
+				$user = json_decode($data['created_by'], true);
 				echo $user["name"];
 			}
 			@endphp
 			</td>
 			<td>@php
-			if($villege->updatedby !=null){
-				$user = json_decode($villege->updatedby, true);
+			if($data['updated_by'] !=0){
+				$user = json_decode($data['updated_by'], true);
 				echo $user["name"];
 			}
 			@endphp</td>
@@ -320,7 +320,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="">
-		  <form action="{{ route('file-import-villege') }}" method="POST" enctype="multipart/form-data">
+		  <form action="{{ route('file-import-city') }}" method="POST" enctype="multipart/form-data">
 			@csrf
 			
             <div class="row">
@@ -451,7 +451,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="">
-		  <form action="{{ route('file-import-school') }}" method="POST" enctype="multipart/form-data">
+		  <form action="{{ route('file-import-villege') }}" method="POST" enctype="multipart/form-data">
 			@csrf
 			
             <div class="row">
